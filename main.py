@@ -9,7 +9,8 @@ cor={
     '],\n}': ']\n}',
     ',,': ',',
     '}\n\t\t{':'},\n\t\t{',
-    '},\n\t]':'\}\n\t]'
+    '},\n\t]':'\}\n\t]',
+    '\n\\n':'\\n'
 }
 
 with open(path,encoding="utf-8-sig") as f:
