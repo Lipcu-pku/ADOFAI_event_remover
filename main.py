@@ -293,7 +293,7 @@ def refresh(a):
 
 # ROOT WINDOW
 style = Style(theme='minty')
-
+# ['cyborg', 'journal', 'darkly', 'flatly', 'solar', 'minty', 'litera', 'united', 'pulse', 'cosmo', 'lumen', 'yeti', 'sandstone']
 root = style.master
 windll.shcore.SetProcessDpiAwareness(1)
 ScaleFactor = windll.shcore.GetScaleFactorForDevice(0)
@@ -381,7 +381,7 @@ new_preset_button = Button(
     root,
     text=NEW_PRESET,
     command=new_preset,
-    width=10,
+    width=11,
     state='disabled'
 )
 
@@ -389,7 +389,7 @@ save_preset_button = Button(
     root,
     text=SAVE_PRESET,
     command=save_preset,
-    width=10,
+    width=11,
     state='disabled'
 )
 
@@ -397,7 +397,7 @@ rename_preset_button = Button(
     root,
     text=RENAME,
     command=rename_preset,
-    width=10,
+    width=11,
     state='disabled'
 )
 
@@ -405,7 +405,7 @@ delete_preset_button = Button(
     root, 
     text=DELETE_PRESET,
     command=delete_preset,
-    width=10,
+    width=11,
     state='disabled'
 )
 
@@ -468,7 +468,7 @@ for (i, event_checkbuttons_group) in enumerate(event_checkbuttons):
 new_preset_button.place(x=1260, y=180, anchor='w')
 save_preset_button.place(x=1450, y=180, anchor='w')
 rename_preset_button.place(x=1640, y=180, anchor='w')
-delete_preset_button.place(x=1810, y=180, anchor='w')
+delete_preset_button.place(x=1830, y=180, anchor='w')
 
 select_all_button.place(x=1000, y=1000, anchor='c')
 deselect_all_button.place(x=1200, y=1000, anchor='c')
