@@ -13,7 +13,7 @@ Support saving preset configures.
 
 ---
 
-#### 实例
+#### 实例 / Example
 
 简体中文
 
