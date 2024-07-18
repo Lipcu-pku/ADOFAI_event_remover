@@ -17,8 +17,10 @@ Support saving preset configures.
 
 简体中文
 
-![image](https://github.com/user-attachments/assets/968742fd-e8d7-42ac-af99-d521466d7fcf)
+![image](https://github.com/user-attachments/assets/0bb4943b-09d5-4711-9030-a151f164ca52)
+
 
 English
 
-![image](https://github.com/user-attachments/assets/00c4256e-4950-43fd-819a-f542f36a55f1)
+![image](https://github.com/user-attachments/assets/c8c94018-1e8f-4b4c-8984-c0f224739906)
+
