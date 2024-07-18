@@ -46,7 +46,7 @@ except:
 
 default_lan = windll.kernel32.GetSystemDefaultUILanguage()
 def get_lan(lan):
-    global LOAD_CHART, CHART_PATH_TITLE, PRESETS_TITLE, CUSTOM, EVENT_NAMES, EVENT_TITLES, SAVE_PRESET, RENAME, CONFIRM, NEW_PRESET, SAVED, DELETE_PRESET, REMOVE_EVENTS, SELECT_ALL, DESELECT_ALL, INVERSE_SELECT
+    global LOAD_CHART, CHART_PATH_TITLE, PRESETS_TITLE, CUSTOM, EVENT_NAMES, EVENT_TITLES, SAVE_PRESET, RENAME, CONFIRM, NEW_PRESET, SAVED, DELETE_PRESET, REMOVE_EVENTS, SELECT_ALL, DESELECT_ALL, INVERSE_SELECT, DUP
     if lan == 2052: # 简体中文
         CHART_PATH_TITLE = '关卡文件：'
         LOAD_CHART = '打开'
@@ -64,6 +64,7 @@ def get_lan(lan):
         SELECT_ALL = '全选'
         DESELECT_ALL = '全不选'
         INVERSE_SELECT = '反选'
+        DUP = '预设名称重复'
     else: # 英文
         CHART_PATH_TITLE = 'Chart File: '
         LOAD_CHART = 'Open'
@@ -81,6 +82,7 @@ def get_lan(lan):
         SELECT_ALL = 'Select All'
         DESELECT_ALL = 'Deselect All'
         INVERSE_SELECT = 'Inverse'
+        DUP = 'Duplicated preset name'
 
 get_lan(default_lan)
 
@@ -180,12 +182,9 @@ def rename_preset():
     global presets, preset, presets_combobox
     rename_window = Toplevel(root)
     rename_window.title(RENAME)
-    new_preset_name = 'Custom_Preset_'
-    i = 1
-    while new_preset_name+str(i) in presets:
-        i += 1
+    origin_preset_name = preset.get()
     default_name = StringVar()
-    default_name.set(new_preset_name+str(i))
+    default_name.set(origin_preset_name)
     rename = Entry(
         rename_window,
         width=40,
@@ -194,6 +193,9 @@ def rename_preset():
     def save_new_preset():
         name = rename.get()
         presets[name] = presets[preset.get()]
+        if name in presets and origin_preset_name != name:
+            showinfo('', DUP)
+            return
         del presets[preset.get()]
         presets_combobox['value'] = tuple(presets.keys())
         save_presets()
