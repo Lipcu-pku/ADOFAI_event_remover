@@ -11,6 +11,10 @@ Support saving preset configures.
 
 支持保存预设配置。
 
+For the source code, you need to use with adofaihelper. 
+
+对于源代码，需要配合adofaihelper使用。（https://github.com/Lipcu-pku/adofaihelper）
+
 ---
 
 #### 实例 / Example
