@@ -3,6 +3,7 @@ from tkinter.messagebox import showinfo
 from tkinter.font import Font
 from adofaihelper import ADOFAI, ADOFAI_read, AskForPath, SaveAsPath, ADOFAI_print
 
+from pyautogui import size
 from os import path, getenv, makedirs
 from json import load, dump, loads, dumps
 from ctypes import windll
@@ -294,13 +295,14 @@ def refresh(a):
         
 
 # ROOT WINDOW
+screen_width, screen_height = size()
+size_rate = screen_width/2880
+
 style = Style(theme='minty')
-# ['cyborg', 'journal', 'darkly', 'flatly', 'solar', 'minty', 'litera', 'united', 'pulse', 'cosmo', 'lumen', 'yeti', 'sandstone']
+
 root = style.master
-windll.shcore.SetProcessDpiAwareness(1)
-ScaleFactor = windll.shcore.GetScaleFactorForDevice(0)
-root.tk.call('tk', 'scaling', ScaleFactor/75)
-root.geometry('2400x1280')
+
+root.geometry(f'{int(2400*size_rate)}x{int(1280*size_rate)}')
 root.resizable(0, 0)
 root.title('ADOFAI Event Remover')
 
@@ -317,7 +319,7 @@ chart_path.set(chart_path_str)
 chart_path_present = Entry(
     root,
     textvariable=chart_path,
-    width=93,
+    width=int(93*(size_rate**0.3)),
     state="disabled"
 )
 
@@ -383,7 +385,7 @@ new_preset_button = Button(
     root,
     text=NEW_PRESET,
     command=new_preset,
-    width=11,
+    width=int(size_rate*11),
     state='disabled'
 )
 
@@ -391,7 +393,7 @@ save_preset_button = Button(
     root,
     text=SAVE_PRESET,
     command=save_preset,
-    width=11,
+    width=int(size_rate*11),
     state='disabled'
 )
 
@@ -399,7 +401,7 @@ rename_preset_button = Button(
     root,
     text=RENAME,
     command=rename_preset,
-    width=11,
+    width=int(size_rate*11),
     state='disabled'
 )
 
@@ -407,7 +409,7 @@ delete_preset_button = Button(
     root, 
     text=DELETE_PRESET,
     command=delete_preset,
-    width=11,
+    width=int(size_rate*11),
     state='disabled'
 )
 
@@ -449,34 +451,34 @@ language_combobox.bind('<<ComboboxSelected>>', refresh)
 
 
 # PLACING
-chart_path_title.place(x=520, y=60, anchor='e')
-chart_path_present.place(x=1840, y=60, anchor='e')
-load_chart_button.place(x=1860, y=60, anchor='w')
+chart_path_title.place(x=int(size_rate*520), y=int(size_rate*60), anchor='e')
+chart_path_present.place(x=int(size_rate*530), y=int(size_rate*60), anchor='w')
+load_chart_button.place(x=int(size_rate*1860), y=int(size_rate*60), anchor='w')
 
-separator_1.pack(padx=30, pady=120, fill='x')
-presets_title.place(x=800, y=180, anchor='e')
-presets_combobox.place(x=820, y=180, anchor='w')
+separator_1.pack(padx=int(size_rate*30), pady=int(size_rate*120), fill='x')
+presets_title.place(x=int(size_rate*800), y=int(size_rate*180), anchor='e')
+presets_combobox.place(x=int(size_rate*820), y=int(size_rate*180), anchor='w')
 
-x = 60
+x = int(size_rate*60)
 for (i, event_checkbuttons_group) in enumerate(event_checkbuttons):
-    y = 280
+    y = int(size_rate*280)
     event_title_labels[i].place(x=x+30, y=y, anchor='w')
-    y += 60
+    y += int(size_rate*60)
     for (j, event_checkbutton) in enumerate(event_checkbuttons_group):
         event_checkbutton.place(x=x, y=y, anchor='w')
-        y += 60
-    x += 320
+        y += int(size_rate*60)
+    x += int(size_rate*320)
 
-new_preset_button.place(x=1260, y=180, anchor='w')
-save_preset_button.place(x=1450, y=180, anchor='w')
-rename_preset_button.place(x=1640, y=180, anchor='w')
-delete_preset_button.place(x=1830, y=180, anchor='w')
+new_preset_button.place(x=int(size_rate*1260), y=int(size_rate*180), anchor='w')
+save_preset_button.place(x=int(size_rate*1450), y=int(size_rate*180), anchor='w')
+rename_preset_button.place(x=int(size_rate*1640), y=int(size_rate*180), anchor='w')
+delete_preset_button.place(x=int(size_rate*1830), y=int(size_rate*180), anchor='w')
 
-select_all_button.place(x=1000, y=1000, anchor='c')
-deselect_all_button.place(x=1200, y=1000, anchor='c')
-inverse_select_button.place(x=1400, y=1000, anchor='c')
+select_all_button.place(x=int(size_rate*1000), y=int(size_rate*1000), anchor='c')
+deselect_all_button.place(x=int(size_rate*1200), y=int(size_rate*1000), anchor='c')
+inverse_select_button.place(x=int(size_rate*1400), y=int(size_rate*1000), anchor='c')
 
-remove_events_button.place(x=1200, y=1100, anchor='c')
-language_combobox.place(x=1200, y=1200, anchor='c')
+remove_events_button.place(x=int(size_rate*1200), y=int(size_rate*1100), anchor='c')
+language_combobox.place(x=int(size_rate*1200), y=int(size_rate*1200), anchor='c')
 
 root.mainloop()
