@@ -5,7 +5,7 @@ from adofaihelper import ADOFAI, ADOFAI_read, AskForPath, SaveAsPath, ADOFAI_pri
 
 from pyautogui import size
 from os import path, getenv, makedirs
-from json import load, dump, loads, dumps
+from json import load, dump
 from ctypes import windll
 
 appdata_path = getenv('APPDATA')
@@ -252,7 +252,12 @@ def remove_events():
         if action["eventType"]!=event:
             actions.append(action)
     contents["actions"]=actions
-    ADOFAI_print(contents, SaveAsPath(), False)
+    savingpath = SaveAsPath()
+    if savingpath[-7:] in ['.adofai', '.ADOFAI']: 
+        pass
+    else:
+        savingpath += '.adofai'
+    ADOFAI_print(ADOFAI(contents), savingpath, False)
 
 def reset_text(widgets, new_texts):
     n=len(widgets)
