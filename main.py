@@ -8,12 +8,14 @@ from os import path, getenv, makedirs
 from json import load, dump
 from ctypes import windll
 
+version = '1.1.0'
+
 appdata_path = getenv('APPDATA')
 if not path.exists(cache_path := path.join(appdata_path, 'ADOFAI_event_remover')):
     makedirs(cache_path)
-ps_path = path.join(appdata_path, 'ADOFAI_event_remover\\presets.json')
-ev_path = path.join(appdata_path, 'ADOFAI_event_remover\\events.json')
-ln_path = path.join(appdata_path, 'ADOFAI_event_remover\\lan.json')
+ps_path = path.join(appdata_path, f'ADOFAI_event_remover\\presets[{version}].json')
+ev_path = path.join(appdata_path, f'ADOFAI_event_remover\\events[{version}].json')
+ln_path = path.join(appdata_path, f'ADOFAI_event_remover\\lan[{version}].json')
 
 try:
     lans = load(open(ln_path, 'r', encoding='utf-8-sig'))
