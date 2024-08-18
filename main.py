@@ -8,7 +8,7 @@ from os import path, getenv, makedirs
 from json import load, dump
 from ctypes import windll
 
-version = '1.1.0'
+version = '1.2.0'
 
 appdata_path = getenv('APPDATA')
 if not path.exists(cache_path := path.join(appdata_path, 'ADOFAI_event_remover')):
