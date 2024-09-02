@@ -17,6 +17,12 @@ For the source code, you need to use with adofaihelper.
 
 ---
 
+#### 更新 / Update
+
+20240902 更新游戏2.8.0 alpha版本中新加入的粒子事件 / Updated Particle events updated in 2.8.0 alpha version
+
+---
+
 #### 实例 / Example
 
 简体中文
