@@ -1,14 +1,14 @@
 from ttkbootstrap import Style, Button, Entry, Label, Checkbutton, StringVar, IntVar, Toplevel, Combobox, Separator
 from tkinter.messagebox import showinfo
 from tkinter.font import Font
-from adofaihelper import ADOFAI, ADOFAI_read, AskForPath, SaveAsPath, ADOFAI_print, path_split
+from adofaihelper import ADOFAI, AskForPath, SaveAsPath, path_split
 
 from pyautogui import size
 from os import path, getenv, makedirs
 from json import load, dump
 from ctypes import windll
 
-version = '1.2.0'
+version = '1.2.1'
 
 appdata_path = getenv('APPDATA')
 if not path.exists(cache_path := path.join(appdata_path, 'ADOFAI_event_remover')):
@@ -25,7 +25,7 @@ except:
             "Events": [
                 ["Gameplay", ["Set Speed", "Twirl", "Checkpoint", "Set Hitsound", "Play Sound", "Set Planet Orbit", "Paused Beats", "Autoplay Tiles", "Scale Planets"]], 
                 ["Track Events", ["Set Track Color", "Set Track Animation", "Recolor Track", "Move Track", "Position Track"]], 
-                ["Decoration Events", ["Delete All Decorations", "Move Decorations", "Set Text", "Set Object", "Set Default Text"]],
+                ["Decoration Events", ["Delete All Decorations", "Move Decorations", "Set Text", "Emit Particle", "Set Particle", "Set Object", "Set Default Text"]],
                 ["Visual Effects", ["Set Background", "Flash", "Move Camera", "Set Filter", "Hall of Mirrors", "Shake Screen", "Bloom", "Tile Screen", "Scroll Screen", "Set Frame Rate"]],
                 ["Modifiers", ["Repeat Events", "Set Conditional Events"]],
                 ["Conveniences", ["Editor Comment", "Bookmark"]],
@@ -36,7 +36,7 @@ except:
             "Events": [
                 ["玩法", ["设置速度", "旋转", "检查点", "设置打拍音", "播放音效", "设置星球轨道", "暂停节拍", "自动播放格子", "缩放行星"]], 
                 ["轨道", ["设置轨道颜色", "设置轨道动画", "重新设置轨道颜色", "移动轨道", "位置轨道"]], 
-                ["装饰", ["删除所有装饰", "移动装饰", "设置文本", "设置对象", "设置默认文本"]],
+                ["装饰", ["删除所有装饰", "移动装饰", "设置文本", "发射粒子", "设置粒子", "设置对象", "设置默认文本"]],
                 ["视效", ["设置背景", "闪光", "移动摄像头", "预设滤镜", "镜厅", "振屏", "绽放", "平铺", "卷屏", "设置帧率"]],
                 ["调整", ["重复事件", "设置条件事件"]],
                 ["易用性", ["编辑器附注", "书签"]],
@@ -49,7 +49,7 @@ except:
 
 default_lan = windll.kernel32.GetSystemDefaultUILanguage()
 def get_lan(lan):
-    global LOAD_CHART, CHART_PATH_TITLE, PRESETS_TITLE, CUSTOM, EVENT_NAMES, EVENT_TITLES, SAVE_PRESET, RENAME, CONFIRM, NEW_PRESET, SAVED, DELETE_PRESET, REMOVE_EVENTS, SELECT_ALL, DESELECT_ALL, INVERSE_SELECT, DUP, SUCCESS, SUCCESS_INFO
+    global LOAD_CHART, CHART_PATH_TITLE, PRESETS_TITLE, CUSTOM, EVENT_NAMES, EVENT_TITLES, SAVE_PRESET, RENAME, CONFIRM, NEW_PRESET, SAVED, DELETE_PRESET, REMOVE_EVENTS, SELECT_ALL, DESELECT_ALL, INVERSE_SELECT, DUP, SUCCESS, SUCCESS_INFO, CANCELED_INFO, CANCELED
     if lan == 2052: # 简体中文
         CHART_PATH_TITLE = '关卡文件：'
         LOAD_CHART = '打开'
@@ -70,6 +70,8 @@ def get_lan(lan):
         DUP = '预设名称重复'
         SUCCESS = '成功'
         SUCCESS_INFO = '成功输出文件'
+        CANCELED = '取消'
+        CANCELED_INFO = '已取消输出'
     else: # 英文
         CHART_PATH_TITLE = 'Chart File: '
         LOAD_CHART = 'Open'
@@ -90,6 +92,8 @@ def get_lan(lan):
         DUP = 'Duplicated preset name'
         SUCCESS = 'Success'
         SUCCESS_INFO = 'Successfully exported file. '
+        CANCELED = 'Canceled'
+        CANCELED_INFO = 'Canceled exporting file. '
 
 get_lan(default_lan)
 
@@ -100,7 +104,7 @@ try:
 except:
     presets = {
         "no effect": ["MoveCamera", "SetDefaultText", "SetFrameRate", "SetHitsound", "PlaySound", "SetPlanetRotation", "AutoPlayTiles", "ScalePlanets", "ColorTrack", "RecolorTrack", "DeleteDecorations", "MoveDecorations", "SetText", "SetObject", "CustomBackground", "Flash", "SetFilter", "HallOfMirrors", "ShakeScreen", "Bloom", "ScreenTile", "ScreenScroll", "RepeatEvents", "SetConditionalEvents"],
-        "low effect": ["DeleteDecorations", "MoveDecorations", "ShakeScreen", "Bloom", "SetFilter", "Flash", "HallOfMirrors", "ScreenTile", "ScreenScroll", "ScalePlanets", "SetFrameRate"]
+        "low effect": ["DeleteDecorations", "MoveDecorations", "EmitParticle", "SetParticle", "ShakeScreen", "Bloom", "SetFilter", "Flash", "HallOfMirrors", "ScreenTile", "ScreenScroll", "ScalePlanets", "SetFrameRate"]
     }
     dump(presets, open(ps_path, 'w', encoding='utf-8-sig'), indent=4, ensure_ascii=False)
 
@@ -110,7 +114,7 @@ except:
     events = [
         ["SetSpeed", "Twirl", "Checkpoint", "SetHitsound", "PlaySound", "SetPlanetRotation", "Pause", "AutoPlayTiles", "ScalePlanets"],
         ["ColorTrack", "AnimateTrack", "RecolorTrack", "MoveTrack", "PositionTrack"],
-        ["DeleteDecorations", "MoveDecorations", "SetText", "SetObject", "SetDefaultText"],
+        ["DeleteDecorations", "MoveDecorations", "SetText", "EmitParticle", "SetParticle", "SetObject", "SetDefaultText"],
         ["CustomBackground", "Flash", "MoveCamera", "SetFilter", "HallOfMirrors", "ShakeScreen", "Bloom", "ScreenTile", "ScreenScroll", "SetFrameRate"],
         ["RepeatEvents", "SetConditionalEvents"], 
         ["EditorComment", "Bookmark"], 
@@ -253,26 +257,29 @@ def inverse_select():
 def remove_events():
     chart_path = chart_path_present.get()
     dir, level_name, ext = path_split(chart_path)
-    contents = ADOFAI_read(chart_path)
+    level = ADOFAI.load(chart_path)
     actions = []
     removing_events = []
     for (i, event_intvar_group) in enumerate(event_intvars):
         for (j, event_intvar) in enumerate(event_intvar_group):
             if event_intvar.get():
                 removing_events.append(events[i][j])
-    for action in contents["actions"]:
-        if action["eventType"] not in removing_events:
+    for action in level.actions:
+        if action.eventType not in removing_events:
             actions.append(action)
     if "DeleteDecorations" in removing_events:
-        contents["decorations"] = []
-    contents["actions"]=actions
-    savingpath = SaveAsPath(f'{level_name} [low]')
-    if savingpath[-7:] in ['.adofai', '.ADOFAI']: 
-        pass
+        level.decorations = []
+    level.actions = actions
+    savingpath = SaveAsPath(f'{level_name} [low].adofai')
+    if savingpath == '':
+        showinfo(CANCELED, CANCELED_INFO)
     else:
-        savingpath += '.adofai'
-    ADOFAI_print(ADOFAI(contents), savingpath, False)
-    showinfo(SUCCESS, SUCCESS_INFO)
+        if savingpath[-7:] in ['.adofai', '.ADOFAI']: 
+            pass
+        else:
+            savingpath += '.adofai'
+        level.dump(savingpath, False)
+        showinfo(SUCCESS, SUCCESS_INFO)
 
 def reset_text(widgets, new_texts):
     n=len(widgets)
